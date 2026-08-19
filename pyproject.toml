@@ -1,0 +1,7 @@
+[project]
+name = "accessagent"
+version = "0.1.0"
+description = "An application that assesses accessibility for a website URL"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
