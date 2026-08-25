@@ -5,6 +5,7 @@ description = "An ai agent that assesses accessibility for a website URL"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "axe-core-python>=0.1.0",
     "langchain-anthropic>=1.6.1",
     "langchain-community>=0.4.2",
     "langchain-core>=1.6.0",
