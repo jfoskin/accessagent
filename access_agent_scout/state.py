@@ -9,7 +9,8 @@ from pydantic import BaseModel, Field
 class Location(BaseModel):
     selector: Optional[str] = None
     url: Optional[str] = None
-    file: Optional
+    file: Optional[str] = None
+    line: Optional[int] = None
 
 
 class Finding(BaseModel):
@@ -29,3 +30,5 @@ class AssessmentState(BaseModel):
     input_type: Literal['url', 'repo']
     input_value: str
     findings: list[Finding] = Field(default_factory=list)
+    aggregated_findings: list[Finding] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
