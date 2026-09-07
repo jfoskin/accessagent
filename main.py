@@ -1,6 +1,3 @@
-def main():
-    print("Hello from accessagent!")
-
-
-if __name__ == "__main__":
-    main()
+import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
