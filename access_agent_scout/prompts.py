@@ -25,7 +25,7 @@ def build_aggregrator_prompt(findings: list[Finding]) -> str:
         [f.model_dump() for f in findings], indent=2
     )
 
-    source_agents = {f.source-source_agents for f in findings}
+    source_agents = {f.source_agents for f in findings}
 
     return AGGREGATOR_USER_PROMPT_TEMPLATE.format(
         finding_count=len(findings),
