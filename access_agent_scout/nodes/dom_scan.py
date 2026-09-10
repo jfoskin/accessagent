@@ -1,8 +1,6 @@
 """This file is the part of the pipeline that actually goes out, loads a real webpage in a browser, and checks it for accessibility problems
 
-This file launches the chromium browser using playwright to navigate to the submitted url
-axe-core (the accessibilty engine) then runs against the rendered page. From here it returns axe-core raw results and normailize them to my project's Finding shape and lastly hands those findings back to the graph.
-
+This file launches the chromium browser using playwright to navigate to the submitted url axe-core (the accessibilty engine) then runs against the rendered page. From here it returns axe-core raw results and normailize them to my project's Finding shape and lastly hands those findings back to the graph.
 """
 
 from playwright.sync_api import sync_playwright
@@ -29,21 +27,21 @@ def _normalize_violations(violations: list[dict], source_url: str) -> list[Findi
         description = violation.get("description", "")
         impact = violation.get("impact")
 
-     # a single violation can affect multiple elements on the page one Finding per affected node, since location is per-element
-    for node in violation.get("nodes", []):
-        selector = ", ".json(node.get("target", []))
+        # a single violation can affect multiple elements on the page one Finding per affected node, since location is per-element
+        for node in violation.get("nodes", []):
+            selector = ", ".join(node.get("target", []))
 
-        findings.append(
-            Finding(
-                rule_id=rule_id,
-                severity=_severity_from_impact(impact),
-                location=Location(selector=selector url, source_url),
-                description=description,
-                source_agent="dom_scan"
+            findings.append(
+                Finding(
+                    rule_id=rule_id,
+                    severity=_severity_from_impact(impact),
+                    location=Location(selector=selector,  url=source_url),
+                    description=description,
+                    source_agent="dom_scan"
+                )
             )
-        )
 
-        return findings
+    return findings
 
 
 # function node to be called in graph.py
@@ -65,7 +63,7 @@ def dom_scan_node(state: AssessmentState) -> dict:
 
             browser.close()
 
-        findings = _normalize_violations(result.get("violations", []))
+        findings = _normalize_violations(result.get("violations", []), url)
         return {"findings": state.findings + findings}
 
     except Exception as e:
