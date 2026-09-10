@@ -1,0 +1,5 @@
+{
+    "workbench.editor.tabSizingFixedMinWidth": 50,
+    "editor.minimap.maxColumn": 120,
+    "editor.wordWrapColumn": 100
+}

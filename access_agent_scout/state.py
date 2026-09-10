@@ -1,5 +1,5 @@
 '''
-This file is the single source of what data looks like as it moves through the graph 
+This file is the single source of what data looks like as it moves through the graph.
 '''
 
 from typing import Literal, Optional
@@ -15,12 +15,12 @@ class Location(BaseModel):
 
 class Finding(BaseModel):
     rule_id: str
-    wcag_criteroin: str
-    level: Literal["A", "AA", "AAA"]
+    wcag_criteroin: Optional[str] = None
+    level: Literal["A", "AA", "AAA"] = None
     severity: Literal["critical",  "serious",  "moderate",  "minor"]
     location: Location
     description: str
-    confidence: Literal["high",  "needs_review"]
+    confidence: Literal["high",  "needs_review"] = "needs_review"
     suggested_fix: Optional[str] = None
     source_agent: str
 
