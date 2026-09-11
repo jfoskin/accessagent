@@ -23,6 +23,7 @@ class Finding(BaseModel):
     confidence: Literal["high",  "needs_review"] = "needs_review"
     suggested_fix: Optional[str] = None
     source_agent: str
+    raw_tags: list[str] = Field(default_factory=list)
 
 
 # The object that gets passed from node to node as it flows through the LangGraph pipeline

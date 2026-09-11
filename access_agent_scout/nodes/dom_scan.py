@@ -37,7 +37,8 @@ def _normalize_violations(violations: list[dict], source_url: str) -> list[Findi
                     severity=_severity_from_impact(impact),
                     location=Location(selector=selector,  url=source_url),
                     description=description,
-                    source_agent="dom_scan"
+                    source_agent="dom_scan",
+                    raw_tags=violation.get("tags", [])
                 )
             )
 
