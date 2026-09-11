@@ -14,16 +14,21 @@ def test_dom_scan_finds_known_violations():
     result = dom_scan_node(state)
 
     # The following statement must be True if not an AssertionError is thrown
+    # Checks that the dictionary dom_scan_node returned actually has a "findings" key in it, then pulls out the list of findings, then checks it's not empty.
+
     assert "findings" in result:
     findings = result["findings"]
-    assert len(findings) > 0
+    assert len(
+        findings) > 0, "expected at least one violation on the known-bad test page"
 
+    # Loops through every finding and checks each one is shaped correctly
     for finding in findings:
         assert finding.rule_id
         assert finding.severity in {"critical", "serious", "moderate", "minor"}
         assert finding.location is not None
         assert finding.source_agent == dom_scan
 
+    # checks if at least one finding in the list has a non-empty raw_tags list.
     assert any(finding.raw_tags for finding in findings), (
         "expected at least one finding to carry raw WCAG tags"
     )
