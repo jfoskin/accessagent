@@ -8,9 +8,9 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "accessagent"
+name = "access-agent-scout"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "axe-core-python" },
     { name = "langchain-anthropic" },

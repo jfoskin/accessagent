@@ -1,5 +1,5 @@
 [project]
-name = "accessagent"
+name = "access-agent-scout"
 version = "0.1.0"
 description = "An ai agent that assesses accessibility for a website URL"
 readme = "README.md"
@@ -16,3 +16,7 @@ dependencies = [
     "pytest>=9.1.1",
     "streamlit>=1.62.0",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
