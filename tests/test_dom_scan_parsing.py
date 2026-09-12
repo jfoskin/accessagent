@@ -8,7 +8,7 @@ def test_dom_scan_finds_known_violations():
     """Test to confirm dom scan is working correctly when given a url"""
 
     # return this path as a url
-    test_page = (Path(__file__).parent / "fixture" /
+    test_page = (Path(__file__).parent / "fixtures" /
                  "test_page.html").resolve().as_uri()
 
     state = AssessmentState(input_type="url", input_value=test_page)

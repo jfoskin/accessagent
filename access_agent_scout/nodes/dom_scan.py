@@ -69,4 +69,4 @@ def dom_scan_node(state: AssessmentState) -> dict:
 
     except Exception as e:
         error_msg = f" Dom scan failed for {url}: {e}"
-        return {"errors": state.error + [error_msg]}
+        return {"errors": state.errors + [error_msg]}
