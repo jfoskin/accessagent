@@ -31,7 +31,7 @@ class AssessmentState(BaseModel):
     input_type: Literal['url', 'repo']
     input_value: str
     findings: list[Finding] = Field(default_factory=list)
-    aggregated_findings: list[Finding] = Field(default_factory=list)
+    aggregated_findings: list[AggregatedFinding] = Field(default_factory=list)
     errors: list[str] = Field(default_factory=list)
 
 
