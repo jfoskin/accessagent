@@ -33,3 +33,22 @@ class AssessmentState(BaseModel):
     findings: list[Finding] = Field(default_factory=list)
     aggregated_findings: list[Finding] = Field(default_factory=list)
     errors: list[str] = Field(default_factory=list)
+
+
+class AggregatedFinding(BaseModel):
+    """A finding after the aggregator has processed it. The WCAG mapping and severity are now required, not optional, as this is the aggregators job"""
+
+    rule_id = str
+    wcag_criterion: str
+    level: Literal["A", "AA", "AAA"]
+    severity: Literal["critical", "serious", "moderate", "minor"]
+    location: Location
+    description: str
+    confidence: Literal["high", "needa_review"]
+    suggested_fix: Optional[str] = None
+    source_agent: str
+
+
+class AggregatedFindings(BaseModel):
+    """Container so the aggregator can retturn a full deduped list in one structures-output call."""
+    findings: list[AggregatedFinding] = Field(default_factory=list)

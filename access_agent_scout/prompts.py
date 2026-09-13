@@ -15,24 +15,24 @@ Ground every WCAG mapping in the raw tags and rule data provided in the findings
 only use what the raw data supports."""
 
 
-AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_counr} scanners:
+AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_count} scanners:
 
-{finding_json}
+{findings_json}
 
 Review these findings, merge any duplicates and produce the final deduplicated list of WCAG mappings, severity and confidence for each distinct issue."""
 
 
-def build_aggregrator_prompt(findings: list[Finding]) -> str:
+def build_aggregator_prompt(findings: list[Finding]) -> str:
     """Builds the user-turn prompt text for the aggregator LLM  call."""
 
     findings_json = json.dumps(
         [f.model_dump() for f in findings], indent=2
     )
 
-    source_agents = {f.source_agents for f in findings}
+    source_agent = {f.source_agent for f in findings}
 
     return AGGREGATOR_USER_PROMPT_TEMPLATE.format(
         finding_count=len(findings),
-        source_count=len(source_agents),
+        source_count=len(source_agent),
         findings_json=findings_json
     )
