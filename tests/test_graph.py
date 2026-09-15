@@ -13,4 +13,10 @@ def test_graph_runs_end_to_end():
     # confirms graph reaches the aggregator
     assert "aggregated_findings" in result
     assert isinstance(result["findings"], list)
-    assert result["aggregated_findings"] == result["findings"]
+    assert isinstance(result["aggregated_findings"], list)
+
+    # aggregated_findings should be real AggregatedFinding objects now,
+    # not a passthrough of raw findings
+    for finding in result["aggregated_findings"]:
+        assert finding.wcag_criterion is not None
+        assert finding.level in {"A", "AA", "AAA"}
