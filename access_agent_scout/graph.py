@@ -2,15 +2,11 @@ from langgraph.graph import StateGraph, START, END
 
 from access_agent_scout.state import AssessmentState
 from access_agent_scout.nodes.dom_scan import dom_scan_node
+from access_agent_scout.nodes.aggregator import aggregator_node
 
 
 def planner_node(state: AssessmentState) -> dict:
-
     return {}
-
-
-def aggregator_node(state: AssessmentState) -> dict:
-    return {"aggregated_findings": state.findings}
 
 
 def report_node(state: AssessmentState) -> dict:
