@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from access_agent_scout.state import AssessmentState
-from access_agent_scout.nodes.dom_scan import dom_scan_node
+from access_agent_scout.nodes.dom_scan import dom_scan_node, _severity_from_impact
 
 
 def test_dom_scan_finds_known_violations():
@@ -44,3 +44,12 @@ def test_dom_scan_handles_bad_url():
 
     assert "errors" in result
     assert len(result["errors"]) > 0
+
+
+def test_severity_from_impact_maps_correctly():  # ← new test, added at the end
+    assert _severity_from_impact("critical") == "critical"
+    assert _severity_from_impact("serious") == "serious"
+    assert _severity_from_impact("moderate") == "moderate"
+    assert _severity_from_impact("minor") == "minor"
+    assert _severity_from_impact("garbage") == "moderate"
+    assert _severity_from_impact(None) == "moderate"
