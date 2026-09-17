@@ -15,7 +15,7 @@ scan_clicked = st.button("Scan")
 if scan_clicked and url:
     with st.spinner("Scanning page for accessiblity issues"):
         state = AssessmentState(input_type="url", input_value=url)
-        result = compiled_graph(state)
+        result = compiled_graph.invoke(state)
 
     findings = result.get("aggregated_findings", [])
     errors = result.get("errors", [])
@@ -33,7 +33,7 @@ if scan_clicked and url:
         severity_order = {"critical": 0,
                           "serious": 1, "moderate": 2, "minor": 3}
         findings_sorted = sorted(
-            findings, key=lambda f: severity_order.get(f.serverity, 99))
+            findings, key=lambda f: severity_order.get(f.severity, 99))
         for finding in findings_sorted:
             with st.expander(f"[{finding.severity.upper()}] {finding.description}"):
                 st.write(

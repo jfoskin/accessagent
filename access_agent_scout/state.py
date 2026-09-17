@@ -14,6 +14,7 @@ class Location(BaseModel):
 
 
 class Finding(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # restricts model
     rule_id: str
     wcag_criterion: Optional[str] = None
     level: Literal["A", "AA", "AAA"] = None
