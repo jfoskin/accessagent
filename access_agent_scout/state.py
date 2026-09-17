@@ -3,7 +3,7 @@ This file is the single source of what data looks like as it moves through the g
 '''
 
 from typing import Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class Location(BaseModel):
@@ -15,7 +15,7 @@ class Location(BaseModel):
 
 class Finding(BaseModel):
     rule_id: str
-    wcag_criteroin: Optional[str] = None
+    wcag_criterion: Optional[str] = None
     level: Literal["A", "AA", "AAA"] = None
     severity: Literal["critical",  "serious",  "moderate",  "minor"]
     location: Location
@@ -28,6 +28,8 @@ class Finding(BaseModel):
 
 class AggregatedFinding(Finding):
     """A finding after the aggregator has processed it. The WCAG mapping and severity are now required, not optional, as this is the aggregators job"""
+    model_config = ConfigDict(
+        extra="forbid")  # restricts pydantic since models by default silently accept and store extra fields not defined in the schema
     wcag_criterion: str
     level: Literal["A", "AA", "AAA"]
 

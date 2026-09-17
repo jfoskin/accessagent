@@ -3,12 +3,17 @@ from langchain_anthropic import ChatAnthropic
 from langchain_ollama import ChatOllama
 
 
-def get_llm(model: str = "claude-sonnet-4-6", temperature: float = 0):
+def get_llm():
     """
     Function that returns different llm models 
     """
 
     provider = os.getenv("LLM_PROVIDER", "anthropic")
     if provider == "ollama":
-        return ChatOllama(model=model, temperature=0)
-    return ChatAnthropic(model=model, temperature=temperature)
+        return ChatOllama(
+            model="qwen3:8b",
+            temperature=0,
+            base_url="http://localhost:11434",
+            timeout=60
+        )
+    return ChatAnthropic(model="claude-sonnet-4-6", temperature=0)
