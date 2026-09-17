@@ -14,7 +14,7 @@ from access_agent_scout.state import AssessmentState, Location, Finding
 def _severity_from_impact(impact: str | None) -> str:
     """axe-core's impact fields maps directly onto the severity  values """
     valid = {"critical", "serious", "moderate", "minor"}
-    return impact if impact is valid else "moderate"
+    return impact if impact in valid else "moderate"
 
 
 def _normalize_violations(violations: list[dict], source_url: str) -> list[Finding]:
