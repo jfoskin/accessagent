@@ -4,6 +4,18 @@ from access_agent_scout.state import AssessmentState
 from access_agent_scout.nodes.dom_scan import dom_scan_node, _severity_from_impact
 
 
+def test_dom_scan_clean_page_returns_no_findings():
+    """A genuinely accessible page should produce near-zero findings, not an error."""
+    clean_page = (Path(__file__).parent / "fixtures" /
+                  "clean_page.html").resolve().as_uri()
+
+    state = AssessmentState(input_type="url", input_value=clean_page)
+    result = dom_scan_node(state)
+
+    assert "errors" not in result or len(result.get("errors", [])) == 0
+    assert len(result.get("findings", [])) == 0
+
+
 def test_dom_scan_finds_known_violations():
     """Test to confirm dom scan is working correctly when given a url"""
 
@@ -53,3 +65,15 @@ def test_severity_from_impact_maps_correctly():  # ← new test, added at the en
     assert _severity_from_impact("minor") == "minor"
     assert _severity_from_impact("garbage") == "moderate"
     assert _severity_from_impact(None) == "moderate"
+
+
+def test_dom_scan_handles_timeout_gracefully():
+    """A page that can't load within the given timeout should fail cleanly, not hang."""
+    state = AssessmentState(
+        input_type="url", input_value="https://www.wikipedia.org")
+    result = dom_scan_node(state, timeout_ms=1)  # 1ms — guaranteed to time out
+
+    assert "errors" in result
+    assert len(result["errors"]) > 0
+    assert "timeout" in result["errors"][0].lower(
+    ) or "exceeded" in result["errors"][0].lower()
