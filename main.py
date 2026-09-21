@@ -7,15 +7,19 @@ load_dotenv()
 
 st.set_page_config("Access Agent", page_icon="♿")
 st.title("Access Agent")
-st.write("Enter a URL to scan it for accessibility issues against WCAG 2.2.")
+st.write("Enter a URL to scan it for accessiblity issues against WCAG 2.2.")
 
 url = st.text_input("Enter website url", placeholder="https://example.com")
 scan_clicked = st.button("Scan")
 
 if scan_clicked and url:
     with st.spinner("Scanning page for accessiblity issues"):
-        state = AssessmentState(input_type="url", input_value=url)
-        result = compiled_graph.invoke(state)
+        try:
+            state = AssessmentState(input_type="url", input_value=url)
+            result = compiled_graph.invoke(state)
+        except Exception as e:
+            st.error(f"Something went wrong while sscanning this page {e}")
+            st.stop()
 
     findings = result.get("aggregated_findings", [])
     errors = result.get("errors", [])
@@ -28,7 +32,7 @@ if scan_clicked and url:
         st.success("✅ No accessibility issues found.")
 
     else:
-        st.subheader(f"Found{len(findings)} issue(s)")
+        st.subheader(f"Found {len(findings)} issue(s)")
 
         severity_order = {"critical": 0,
                           "serious": 1, "moderate": 2, "minor": 3}

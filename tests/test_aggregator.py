@@ -4,6 +4,19 @@ from access_agent_scout.nodes.dom_scan import dom_scan_node
 from access_agent_scout.nodes.aggregator import aggregator_node
 
 
+import pytest
+import requests
+
+
+def _ollama_running() -> bool:
+    try:
+        requests.get("http://localhost:11434", timeout=2)
+        return True
+    except Exception:
+        return False
+
+
+@pytest.mark.skipif(not _ollama_running(), reason="Ollama is not running locally")
 def test_aggregator_includes_real_findings():
     """Includes real findings from the fixture page into the aggregator and confirms every result has real WCAG mappings """
 

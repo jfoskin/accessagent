@@ -42,16 +42,18 @@ def aggregator_node(state: AssessmentState) -> dict:
         ("human", prompt)
     ]
 
+    attempt_errors = []
+
     for attempt in range(2):
         try:
             result = llm.invoke(messages)
             return {"aggregated_findings": result.findings}
         except Exception as e:
             error_msg = f"Aggregator attempt {attempt + 1} failed: {e}"
+            attempt_errors.append(error_msg)
             if attempt == 1:
                 fallback = _raw_findings_as_fallback(state)
                 return {
                     "aggregated_findings": fallback,
-                    "errors": state.errors + [error_msg],
+                    "errors": state.errors + attempt_errors,
                 }
-    return {"aggregated_findings": []}
