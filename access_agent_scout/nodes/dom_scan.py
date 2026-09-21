@@ -47,7 +47,7 @@ def _normalize_violations(violations: list[dict], source_url: str) -> list[Findi
 
 # function node to be called in graph.py
 
-def dom_scan_node(state: AssessmentState) -> dict:
+def dom_scan_node(state: AssessmentState, timeout_ms: int = 30000) -> dict:
     """
     LangGraph node: runs axe-core against rendered page at state.input_value and returns normalized findings. Never raises toolfailures are logged to error
     """
@@ -58,7 +58,7 @@ def dom_scan_node(state: AssessmentState) -> dict:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
             page = browser.new_page()
-            page.goto(url)
+            page.goto(url, timeout=timeout_ms)
 
             result = axe.run(page)
 
