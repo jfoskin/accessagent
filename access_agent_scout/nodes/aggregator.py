@@ -50,6 +50,7 @@ def aggregator_node(state: AssessmentState) -> dict:
             return {"aggregated_findings": result.findings}
         except Exception as e:
             error_msg = f"Aggregator attempt {attempt + 1} failed: {e}"
+            print(error_msg)
             attempt_errors.append(error_msg)
             if attempt == 1:
                 fallback = _raw_findings_as_fallback(state)

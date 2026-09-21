@@ -21,6 +21,7 @@ dependencies = [
     { name = "playwright" },
     { name = "pydantic" },
     { name = "pytest" },
+    { name = "requests" },
     { name = "streamlit" },
 ]
 
@@ -35,6 +36,7 @@ requires-dist = [
     { name = "playwright", specifier = ">=1.62.0" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pytest", specifier = ">=9.1.1" },
+    { name = "requests", specifier = ">=2.34.2" },
     { name = "streamlit", specifier = ">=1.62.0" },
 ]
 
