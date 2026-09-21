@@ -5,14 +5,23 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _normalize_url(url: str) -> str:
+    """Adds https:// to the front of a URL if no scheme is present."""
+    url = url.strip()
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+    return url
+
+
 st.set_page_config("Access Agent", page_icon="♿")
 st.title("Access Agent")
 st.write("Enter a URL to scan it for accessiblity issues against WCAG 2.2.")
 
-url = st.text_input("Enter website url", placeholder="https://example.com")
-scan_clicked = st.button("Scan")
+with st.form("scan-form"):
+    url = st.text_input("Enter website url", placeholder="https://example.com")
+    submitted = st.form_submit_button("Scan")
 
-if scan_clicked and url:
+if submitted and url:
     with st.spinner("Scanning page for accessiblity issues"):
         try:
             state = AssessmentState(input_type="url", input_value=url)
@@ -51,4 +60,4 @@ if scan_clicked and url:
 
 
 elif scan_clicked and not url:
-    st.error(f" PLease enter url")
+    st.error(f" Please enter url")

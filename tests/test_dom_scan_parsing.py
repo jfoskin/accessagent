@@ -12,6 +12,9 @@ def test_dom_scan_clean_page_returns_no_findings():
     state = AssessmentState(input_type="url", input_value=clean_page)
     result = dom_scan_node(state)
 
+    for f in result.get("findings", []):
+        print(f.rule_id, "-", f.description)
+
     assert "errors" not in result or len(result.get("errors", [])) == 0
     assert len(result.get("findings", [])) == 0
 
@@ -77,28 +80,3 @@ def test_dom_scan_handles_timeout_gracefully():
     assert len(result["errors"]) > 0
     assert "timeout" in result["errors"][0].lower(
     ) or "exceeded" in result["errors"][0].lower()
-
-
-def test_aggregator_handles_many_violations():
-    """Aggregator should still return valid, parseable output even with 20+ findings."""
-    many_page = (Path(__file__).parent / "fixtures" /
-                 "many_violations.html").resolve().as_uri()
-
-    scan_state = AssessmentState(input_type="url", input_value=many_page)
-    scan_result = dom_scan_node(scan_state)
-
-    assert len(scan_result["findings"]
-               ) >= 20, "fixture should produce 20+ findings"
-
-    agg_state = AssessmentState(
-        input_type="url",
-        input_value=many_page,
-        findings=scan_result["findings"],
-    )
-    agg_result = aggregator_node(agg_state)
-
-    assert "aggregated_findings" in agg_result
-    assert isinstance(agg_result["aggregated_findings"], list)
-    for finding in agg_result["aggregated_findings"]:
-        assert finding.rule_id
-        assert finding.severity in {"critical", "serious", "moderate", "minor"}

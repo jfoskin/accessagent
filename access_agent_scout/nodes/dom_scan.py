@@ -1,6 +1,4 @@
-"""This file is the part of the pipeline that actually goes out, loads a real webpage in a browser, and checks it for accessibility problems
-
-This file launches the chromium browser using playwright to navigate to the submitted url axe-core (the accessibilty engine) then runs against the rendered page. From here it returns axe-core raw results and normailize them to my project's Finding shape and lastly hands those findings back to the graph.
+"""This file is the part of the pipeline that actually goes out, loads a real webpage in a browser, and checks it for accessibility problems. This file  also launches the chromium browser using playwright to navigate to the submitted url axe-core (the accessibilty engine) then runs against the rendered page. From here it returns axe-core raw results and normailize them to my project's Finding shape and lastly hands those findings back to the graph.
 """
 
 from playwright.sync_api import sync_playwright
