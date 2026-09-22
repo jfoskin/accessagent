@@ -19,9 +19,11 @@ st.write("Enter a URL to scan it for accessiblity issues against WCAG 2.2.")
 
 with st.form("scan-form"):
     url = st.text_input("Enter website url", placeholder="https://example.com")
-    submitted = st.form_submit_button("Scan")
+    scan_clicked = st.form_submit_button("Scan")
 
-if submitted and url:
+if scan_clicked and url:
+    url = _normalize_url(url)
+
     with st.spinner("Scanning page for accessiblity issues"):
         try:
             state = AssessmentState(input_type="url", input_value=url)
