@@ -15,7 +15,7 @@ or reinterpret them. If wcag_criterion is null, this is a best-practice
 recommendation, not a WCAG requirement."""
 
 
-AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_count} scanners:
+AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_count} scanner(s):
 
 {findings_json}
 

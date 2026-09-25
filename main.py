@@ -51,27 +51,24 @@ if scan_clicked and url:
         findings_sorted = sorted(
             findings, key=lambda f: severity_order.get(f.severity, 99))
 
-        for finding in findings_sorted:
-            with st.expander(f"[{finding.severity.upper()}] {finding.description}"):
-                if finding.is_best_practice:
-                    st.write(
-                        "**Best practice recommendation** (not a WCAG requirement)")
-                else:
-                    st.write(
-                        f"**WCAG Criterion:** {finding.wcag_criterion} (Level {finding.level})")
+    for finding in findings_sorted:
+        with st.expander(f"[{finding.severity.upper()}] {finding.description}"):
+            if finding.is_best_practice:
+                st.write(
+                    "**Best practice recommendation** (not a WCAG requirement)")
+            else:
+                st.write(
+                    f"**WCAG Criterion:** {finding.wcag_criterion} (Level {finding.level})")
 
-                if finding.why_it_matters:
-                    st.write(f"**Why this matters:** {finding.why_it_matters}")
+            st.write(f"**Rule Id:** {finding.rule_id}")
+            st.write(f"**Confidence:** {finding.confidence}")
+            if finding.location.selector:
+                st.code(finding.location.selector, language="html")
 
-                st.write(f"**Rule Id:** {finding.rule_id}")
-                st.write(f"**Confidence:** {finding.confidence}")
-
-                if finding.location.selector:
-                    st.code(finding.location.selector, language="html")
-
-                if finding.suggested_fix:
-                    st.write("**How to fix it:**")
-                    st.code(finding.suggested_fix, language="html")
-
+            if st.button("Explain this issue", key=f"explain_{finding.rule_id}_{id(finding)}"):
+                with st.spinner("Generating explanation..."):
+                    explanation = explain_finding(finding)
+                st.write(f"**Why this matters:** {explanation.why_it_matters}")
+                st.code(explanation.suggested_fix, language="html")
 elif scan_clicked and not url:
     st.error("Please enter a URL.")

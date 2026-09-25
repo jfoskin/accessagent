@@ -14,11 +14,11 @@ def explain_finding(finding: AggregatedFinding) -> Explanation:
     llm = get_llm().with_structured_output(Explanation)
 
     prompt = f"""For this accessibility finding, explain why it matters in \
-plain language (1-2 sentences, no jargon) and suggest a concrete fix:
+    plain language (1-2 sentences, no jargon) and suggest a concrete fix:
 
-Rule: {finding.rule_id}
-Description: {finding.description}
-Severity: {finding.severity}
-WCAG Criterion: {finding.wcag_criterion or "N/A (best practice)"}"""
+    Rule: {finding.rule_id}
+    Description: {finding.description}
+    Severity: {finding.severity}
+    WCAG Criterion: {finding.wcag_criterion or "N/A (best practice)"}"""
 
     return llm.invoke(prompt)
