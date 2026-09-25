@@ -15,6 +15,6 @@ def get_llm():
             model="qwen3:8b",
             temperature=0,
             base_url="http://localhost:11434",
-            timeout=60
+            sync_client_kwargs={"timeout": 60},
         )
     return ChatAnthropic(model="claude-sonnet-4-6", temperature=0)

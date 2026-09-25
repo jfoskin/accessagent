@@ -2,7 +2,7 @@
 This file is the single source of what data looks like as it moves through the graph.
 '''
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -17,7 +17,7 @@ class Finding(BaseModel):
     model_config = ConfigDict(extra="forbid")  # restricts model
     rule_id: str
     wcag_criterion: Optional[str] = None
-    level: Literal["A", "AA", "AAA"] = None
+    level: Union[Literal["A", "AA", "AAA"], None] = None
     severity: Literal["critical",  "serious",  "moderate",  "minor"]
     location: Location
     description: str
@@ -31,6 +31,7 @@ class AggregatedFinding(Finding):
     """A finding after the aggregator has processed it.  wcag_criterion/level stay Optional, inherited as-is from Finding —a genuinely best-practice-only rule (no real WCAG mapping) is a legitimate, correct outcome, not a failure to fix.
         """
     is_best_practice: bool = False  # True when axe-core provided no WCAG tag at all
+    why_it_matters: str = ""  # generated plain-language explanation of real-world impact
 
 
 class AggregatedFindings(BaseModel):

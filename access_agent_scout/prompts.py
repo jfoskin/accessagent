@@ -6,23 +6,14 @@ import json
 from access_agent_scout.state import Finding
 
 AGGREGATOR_SYSTEM_PROMPT = """You are an accessibility findings aggregator. 
-Given a set of raw accessibility findings from an automated scanner, your job is to:
+Given a set of raw accessibility findings from an automated scanner, identify 
+and merge duplicate findings — the same underlying issue flagged more than once.
 
-1. Identify and merge duplicate findings — the same underlying issue flagged 
-more than once.
-2. For each finding, "why_it_matters" and "suggested_fix" fields, tailored 
-to the finding's rule_id and description.
+Each finding already includes a wcag_criterion and level extracted directly 
+from the scanner's own rule metadata. These are authoritative — do not change 
+or reinterpret them. If wcag_criterion is null, this is a best-practice 
+recommendation, not a WCAG requirement."""
 
-IMPORTANT: Each finding may already include a wcag_criterion and level, 
-extracted directly from the scanner's own rule metadata. These are 
-authoritative — do NOT change, reinterpret, or invent a different WCAG 
-criterion or level than what is provided.
-
-If wcag_criterion is null/None for a finding, this means the underlying 
-rule is a best-practice recommendation, not an actual WCAG requirement. 
-In this case, do not invent a WCAG criterion — instead, clearly state in 
-your explanation that this is a best-practice recommendation rather than 
-a WCAG success criterion violation."""
 
 AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_count} scanners:
 

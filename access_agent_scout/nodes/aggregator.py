@@ -1,7 +1,6 @@
 from access_agent_scout.state import AssessmentState, AggregatedFinding, AggregatedFindings
 from access_agent_scout.llm import get_llm
 from access_agent_scout.prompts import AGGREGATOR_SYSTEM_PROMPT, build_aggregator_prompt
-from access_agent_scout.wcag_reference
 
 
 def _raw_findings_as_fallback(state: AssessmentState) -> list[AggregatedFinding]:
@@ -27,7 +26,7 @@ def _raw_findings_as_fallback(state: AssessmentState) -> list[AggregatedFinding]
     return fallback
 
 
-ddef aggregator_node(state: AssessmentState) -> dict:
+def aggregator_node(state: AssessmentState) -> dict:
     if not state.findings:
         return {"aggregated_findings": []}
 

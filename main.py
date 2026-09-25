@@ -60,6 +60,9 @@ if scan_clicked and url:
                     st.write(
                         f"**WCAG Criterion:** {finding.wcag_criterion} (Level {finding.level})")
 
+                if finding.why_it_matters:
+                    st.write(f"**Why this matters:** {finding.why_it_matters}")
+
                 st.write(f"**Rule Id:** {finding.rule_id}")
                 st.write(f"**Confidence:** {finding.confidence}")
 
@@ -67,7 +70,8 @@ if scan_clicked and url:
                     st.code(finding.location.selector, language="html")
 
                 if finding.suggested_fix:
-                    st.write(f"**Recommendations:** {finding.suggested_fix}")
+                    st.write("**How to fix it:**")
+                    st.code(finding.suggested_fix, language="html")
 
 elif scan_clicked and not url:
     st.error("Please enter a URL.")
