@@ -5,6 +5,7 @@ from playwright.sync_api import sync_playwright
 from axe_core_python.sync_playwright import Axe
 
 from access_agent_scout.state import AssessmentState, Location, Finding
+from access_agent_scout.wcag_reference import parse_wcag_from_tags
 
 # helper functions for dom_scan_node
 
@@ -16,7 +17,7 @@ def _severity_from_impact(impact: str | None) -> str:
 
 
 def _normalize_violations(violations: list[dict], source_url: str) -> list[Finding]:
-    """Turns raw axe-core violations into normailzed Finding objects."""
+    """Turns raw axe-core violations into normalized Finding objects."""
 
     findings: list[Finding] = []
 
@@ -24,8 +25,10 @@ def _normalize_violations(violations: list[dict], source_url: str) -> list[Findi
         rule_id = violation.get("id", "unknown-rule")
         description = violation.get("description", "")
         impact = violation.get("impact")
+        raw_tags = violation.get("tags", [])
 
-        # a single violation can affect multiple elements on the page one Finding per affected node, since location is per-element
+        criterion, level = parse_wcag_from_tags(raw_tags)
+
         for node in violation.get("nodes", []):
             selector = ", ".join(node.get("target", []))
 
@@ -33,10 +36,12 @@ def _normalize_violations(violations: list[dict], source_url: str) -> list[Findi
                 Finding(
                     rule_id=rule_id,
                     severity=_severity_from_impact(impact),
-                    location=Location(selector=selector,  url=source_url),
+                    location=Location(selector=selector, url=source_url),
                     description=description,
                     source_agent="dom_scan",
-                    raw_tags=violation.get("tags", [])
+                    raw_tags=raw_tags,
+                    wcag_criterion=criterion,  # deterministic, from axe-core itself
+                    level=level,
                 )
             )
 

@@ -28,11 +28,9 @@ class Finding(BaseModel):
 
 
 class AggregatedFinding(Finding):
-    """A finding after the aggregator has processed it. The WCAG mapping and severity are now required, not optional, as this is the aggregators job"""
-    model_config = ConfigDict(
-        extra="forbid")  # restricts pydantic since models by default silently accept and store extra fields not defined in the schema
-    wcag_criterion: str
-    level: Literal["A", "AA", "AAA"]
+    """A finding after the aggregator has processed it.  wcag_criterion/level stay Optional, inherited as-is from Finding —a genuinely best-practice-only rule (no real WCAG mapping) is a legitimate, correct outcome, not a failure to fix.
+        """
+    is_best_practice: bool = False  # True when axe-core provided no WCAG tag at all
 
 
 class AggregatedFindings(BaseModel):

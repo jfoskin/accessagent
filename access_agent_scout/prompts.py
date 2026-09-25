@@ -5,15 +5,24 @@ This file handles the text that will be passed to the llm.
 import json
 from access_agent_scout.state import Finding
 
-AGGREGATOR_SYSTEM_PROMPT = """You are an accessibility finding aggregator. Given a set of raw accessibilty findings from one or more automated scanners, your job is to:
+AGGREGATOR_SYSTEM_PROMPT = """You are an accessibility findings aggregator. 
+Given a set of raw accessibility findings from an automated scanner, your job is to:
 
-1. Idenitfy and merge duplicate findings. The same underlying issue flagged by more than one scanner or appearing more than once.
-2. Map each distinct issue to its correct WCAG 2.2 succession criterion.
-3. Assign a severity level based on the likely impact on a real user.
+1. Identify and merge duplicate findings — the same underlying issue flagged 
+more than once.
+2. For each finding, "why_it_matters" and "suggested_fix" fields, tailored 
+to the finding's rule_id and description.
 
-Ground every WCAG mapping in the raw tags and rule data provided in the findings below. Do not invent or guess WCAG criterion number from memory
-only use what the raw data supports."""
+IMPORTANT: Each finding may already include a wcag_criterion and level, 
+extracted directly from the scanner's own rule metadata. These are 
+authoritative — do NOT change, reinterpret, or invent a different WCAG 
+criterion or level than what is provided.
 
+If wcag_criterion is null/None for a finding, this means the underlying 
+rule is a best-practice recommendation, not an actual WCAG requirement. 
+In this case, do not invent a WCAG criterion — instead, clearly state in 
+your explanation that this is a best-practice recommendation rather than 
+a WCAG success criterion violation."""
 
 AGGREGATOR_USER_PROMPT_TEMPLATE = """Here are {finding_count} raw findings from {source_count} scanners:
 
