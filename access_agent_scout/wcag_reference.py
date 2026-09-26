@@ -94,3 +94,12 @@ def get_reference_url(criterion: str | None) -> str | None:
     if not slug:
         return None
     return f"https://www.w3.org/WAI/WCAG22/quickref/#{slug}"
+
+
+OBSOLETE_CRITERIA = {"4.1.1"}
+
+
+def is_obsolete_in_2_2(criterion: str | None) -> bool:
+    if criterion is None:
+        return False
+    return criterion.strip() in OBSOLETE_CRITERIA
