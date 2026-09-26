@@ -41,3 +41,56 @@ def parse_wcag_from_tags(raw_tags: list[str]) -> tuple[str | None, str | None]:
             level = _LEVEL_TAG_MAP[tag]
 
     return criterion, level
+
+
+WCAG_NAMES: dict[str, str] = {
+    "1.1.1": "Non-text Content",
+    "1.3.1": "Info and Relationships",
+    "1.3.2": "Meaningful Sequence",
+    "1.4.3": "Contrast (Minimum)",
+    "1.4.4": "Resize Text",
+    "2.4.2": "Page Titled",
+    "2.4.4": "Link Purpose (In Context)",
+    "2.4.6": "Headings and Labels",
+    "2.4.7": "Focus Visible",
+    "3.1.1": "Language of Page",
+    "3.3.2": "Labels or Instructions",
+    "4.1.2": "Name, Role, Value",
+    "4.1.3": "Status Messages",
+}
+
+
+def get_name(criterion: str | None) -> str | None:
+    """Returns the official name for a WCAG criterion, or None if not
+    in the table — verify against the W3C quickref before adding entries."""
+    if criterion is None:
+        return None
+    return WCAG_NAMES.get(criterion.strip())
+
+
+WCAG_SLUGS: dict[str, str] = {
+    "1.1.1": "non-text-content",
+    "1.3.1": "info-and-relationships",
+    "1.3.2": "meaningful-sequence",
+    "1.4.3": "contrast-minimum",
+    "1.4.4": "resize-text",
+    "2.4.2": "page-titled",
+    "2.4.4": "link-purpose-in-context",
+    "2.4.6": "headings-and-labels",
+    "2.4.7": "focus-visible",
+    "3.1.1": "language-of-page",
+    "3.3.2": "labels-or-instructions",
+    "4.1.2": "name-role-value",
+    "4.1.3": "status-messages",
+}
+
+
+def get_reference_url(criterion: str | None) -> str | None:
+    """Returns the official W3C quick reference URL for a WCAG 2.2
+    criterion, or None if not in the table."""
+    if criterion is None:
+        return None
+    slug = WCAG_SLUGS.get(criterion.strip())
+    if not slug:
+        return None
+    return f"https://www.w3.org/WAI/WCAG22/quickref/#{slug}"
