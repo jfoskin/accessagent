@@ -111,9 +111,11 @@ if "scan_result" in st.session_state:
                 if st.button("Explain this issue", key=explain_key):
                     st.session_state["open_finding_key"] = stable_key
                     with st.spinner("Generating explanation..."):
-                        explanation = explain_finding(finding)
-                    st.session_state[result_key] = explanation
-
+                        try:
+                            explanation = explain_finding(finding)
+                            st.session_state[result_key] = explanation
+                        except Exception as e:
+                            st.error(f"Couldn't generate an explanation: {e}")
                 if result_key in st.session_state:
                     explanation = st.session_state[result_key]
                     st.write(
