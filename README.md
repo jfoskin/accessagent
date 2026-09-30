@@ -30,8 +30,8 @@ Automated accessibility scanners like axe-core catch real violations but present
 
 1. **Clone the repo and install dependencies:**
 ```bash
-   git clone <your-repo-url>
-   cd <repo-folder>
+   git clone git@github.com:jfoskin/accessagent.git
+   cd accessagent
    uv sync
 ```
 
