@@ -57,7 +57,7 @@ Automated accessibility scanners like axe-core catch real violations but present
 
 5. **Run the app:**
 ```bash
-   uv run streamlit run app.py
+   uv run streamlit run main.py
 ```
 
 ## Example
